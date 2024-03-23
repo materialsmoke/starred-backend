@@ -28,7 +28,7 @@ class JobResource extends JsonResource
             "location" => $this->location,
             "created_at" => $this->created_at->format('M d Y H:i'),
             "updated_at" => $this->updated_at,
-            "favorites" => (count($this->favorites) > 0 ?? false),
+            "is_favorite" => (count($this->favorites) > 0 ?? false),
         ];
     }
 }

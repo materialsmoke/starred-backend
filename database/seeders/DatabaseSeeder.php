@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CompanySeeder::class);
         $this->call(JobTypeSeeder::class);
         $this->call(JobSeeder::class);
-        $this->call(FavoriteSeeder::class); 
 
         // \App\Models\User::factory(10)->create();
         // \App\Models\User::factory()->create([

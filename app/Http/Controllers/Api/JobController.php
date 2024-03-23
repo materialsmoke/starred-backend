@@ -68,4 +68,68 @@ class JobController extends Controller
     {
         //
     }
+
+    public function favoriteJobs()
+    {
+        $userFavorites = auth()->user()->favorites;
+        foreach($userFavorites as $job){
+            $job->favorites = [$job->id];
+        }
+        $userFavoritesResource = JobResource::collection($userFavorites);
+
+        return response()->json($userFavoritesResource);
+    }
+
+    public function favorite(Job $job)
+    {
+        if(! $job){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Job not found.'
+            ], 404);
+        }
+
+        // check if the user has already chosen this job as favorite
+        foreach(auth()->user()->favorites()->get() as $favorite){
+            if($favorite->id === $job->id){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'This job is already in your favorite list.'
+                ], 400);
+            }
+        }
+
+        // attach the job to user's favorite list
+        auth()->user()->favorites()->attach($job->id);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Job added to favorite list.'
+        ], 201);
+    }
+
+    public function unfavorite(Job $job)
+    {
+        if(empty($job)){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Job not found.'
+            ], 404);
+        }
+
+        // detach the job from user's favorite list
+        $detached = auth()->user()->favorites()->detach($job->id);
+
+        if(empty($detached)){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Job was not in your favorite list.'
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Job removed from favorite list.'
+        ], 201);
+    }
 }

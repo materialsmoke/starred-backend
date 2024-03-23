@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\JobController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +22,10 @@ Route::middleware(['auth:sanctum', 'jsonResponse'])->get('/user', function (Requ
 
 Route::post('login', [ApiAuthController::class, 'login'])->name('login');
 
-Route::apiResource('/jobs', JobController::class);
 Route::group(['middleware' => ['auth:sanctum']], function(){
-    Route::apiResource('favorites', FavoriteController::class);
+    Route::post('jobs/{job}/favorite', [JobController::class, 'favorite']);
+    Route::delete('jobs/{job}/unfavorite', [JobController::class, 'unfavorite']);
+    Route::get('jobs/favorites', [JobController::class, 'favoriteJobs']);
 });
+
+Route::apiResource('/jobs', JobController::class);

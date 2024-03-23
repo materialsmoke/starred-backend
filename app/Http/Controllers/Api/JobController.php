@@ -69,6 +69,9 @@ class JobController extends Controller
         //
     }
 
+    /**
+     * List of user's favorite jobs
+     */
     public function favoriteJobs()
     {
         $userFavorites = auth()->user()->favorites;
@@ -80,6 +83,9 @@ class JobController extends Controller
         return response()->json($userFavoritesResource);
     }
 
+    /**
+     * Store a job in user's favorite list
+     */
     public function favorite(Job $job)
     {
         if(! $job){
@@ -108,6 +114,9 @@ class JobController extends Controller
         ], 201);
     }
 
+    /**
+     * Remove a job from user's favorite list
+     */
     public function unfavorite(Job $job)
     {
         if(empty($job)){

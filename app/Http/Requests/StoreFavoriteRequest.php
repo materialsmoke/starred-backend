@@ -22,7 +22,7 @@ class StoreFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "job_id" => "integer|min:0|max:10000"
         ];
     }
 }
